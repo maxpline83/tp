@@ -2,6 +2,7 @@ package com.github.polomarcus.utils
 
 import com.typesafe.scalalogging.Logger
 import com.github.polomarcus.model.CO2Record
+import com.sun.nio.sctp.SctpStandardSocketOptions.InitMaxStreams
 
 import scala.util.matching.Regex
 
@@ -47,9 +48,17 @@ object ClimateService {
   /**
    * **Tips**: look at the read me to find some tips for this function
    */
-  def getMinMax(list: List[CO2Record]) : (Double, Double) = ???
+  def getMinMax(list: List[CO2Record]) : (Double, Double) = {
+    val min = list.map(_.ppm).min
+    var max = list.map(_.ppm).max
+    (min, max)
+  }
 
-  def getMinMaxByYear(list: List[CO2Record], year: Int) : (Double, Double) = ???
+  def getMinMaxByYear(list: List[CO2Record], year: Int) : (Double, Double) = {
+    var min = list.filter(_.year==year).map(_.ppm).min
+    var max = list.filter(_.year==year).map(_.ppm).max
+    (min,max)
+  }
 
   /**
    * use this function side src/main/scala/com/polomarcus/main/Main (with sbt run)
